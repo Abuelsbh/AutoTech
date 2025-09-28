@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "332513044277",
+    "firebase_url": "https://tcar-e5dcb-default-rtdb.firebaseio.com",
+    "project_id": "tcar-e5dcb",
+    "storage_bucket": "tcar-e5dcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332513044277:android:d234b2df199015b0b3ce7c",
+        "android_client_info": {
+          "package_name": "com.autotech.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332513044277-38b8v518e86ug2600v6021subg4a1elk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQJf3dAEjeH8flATCLB7k__sAbZfWtuyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332513044277-38b8v518e86ug2600v6021subg4a1elk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

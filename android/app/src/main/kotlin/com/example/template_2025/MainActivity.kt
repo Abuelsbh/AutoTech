@@ -1,4 +1,4 @@
-package com.example.template_2025
+package com.autotech.app
 
 import io.flutter.embedding.android.FlutterActivity
 

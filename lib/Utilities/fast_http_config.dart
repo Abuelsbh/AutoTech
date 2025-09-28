@@ -1,6 +1,6 @@
 
 import 'package:fast_http/fast_http.dart';
-import 'package:template_2025/Utilities/shared_preferences.dart';
+import 'package:auto_tech/Utilities/shared_preferences.dart';
 
 class FastHttpConfig{
 

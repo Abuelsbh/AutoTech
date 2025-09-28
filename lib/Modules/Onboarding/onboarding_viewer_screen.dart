@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template_2025/core/Language/app_languages.dart';
-import 'package:template_2025/core/Language/locales.dart';
+import 'package:auto_tech/core/Language/app_languages.dart';
+import 'package:auto_tech/core/Language/locales.dart';
 
 import '../../generated/assets.dart';
 

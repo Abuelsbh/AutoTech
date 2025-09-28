@@ -63,7 +63,7 @@ class EntryPoint extends StatelessWidget {
             scrollBehavior: MyCustomScrollBehavior(),
             routerConfig: GoRouterConfig.router,
             debugShowCheckedModeBanner: false,
-            title: 'Auto Nida',
+            title: 'AutoTech',
             locale: Locale(appLan.appLang.name),
             theme: appTheme.appThemeMode,
             supportedLocales: Languages.values.map((e) => Locale(e.name)).toList(),

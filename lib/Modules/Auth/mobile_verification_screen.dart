@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 import 'package:state_extended/state_extended.dart';
-import 'package:template_2025/Modules/Auth/auth_controller.dart';
-import 'package:template_2025/core/Language/app_languages.dart';
-import 'package:template_2025/core/Language/locales.dart';
+import 'package:auto_tech/Modules/Auth/auth_controller.dart';
+import 'package:auto_tech/core/Language/app_languages.dart';
+import 'package:auto_tech/core/Language/locales.dart';
 
 import '../../generated/assets.dart';
 

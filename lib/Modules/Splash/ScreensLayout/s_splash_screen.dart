@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:state_extended/state_extended.dart';
-import 'package:template_2025/core/Language/locales.dart';
+import 'package:auto_tech/core/Language/locales.dart';
 import '../../../generated/assets.dart';
 import '../splash_controller.dart';
 
