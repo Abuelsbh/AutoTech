@@ -205,3 +205,4 @@ class NotificationAccessScreen extends StatelessWidget {
     );
   }
 }
+

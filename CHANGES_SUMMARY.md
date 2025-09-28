@@ -55,3 +55,4 @@ Splash Screen → Language Selection → Onboarding Viewer → Home Screen
 
 ## النتيجة
 تطبيق أكثر سلاسة وسهولة في الاستخدام مع تجربة مستخدم محسنة بشكل كبير!
+
