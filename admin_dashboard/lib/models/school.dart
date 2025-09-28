@@ -1,0 +1,75 @@
+class School {
+  final String id;
+  final String name;
+  final String logo;
+  final String location;
+  final String adminUsername;
+  final String adminPassword;
+  final double range; // مسافة النطاق بالمتر
+  final int delayMinutes; // عدد الدقائق للتنبيه
+  final DateTime createdAt;
+
+  School({
+    required this.id,
+    required this.name,
+    required this.logo,
+    required this.location,
+    required this.adminUsername,
+    required this.adminPassword,
+    this.range = 100.0,
+    this.delayMinutes = 15,
+    required this.createdAt,
+  });
+
+  factory School.fromMap(Map<String, dynamic> map) {
+    return School(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      logo: map['logo'] ?? '',
+      location: map['location'] ?? '',
+      adminUsername: map['adminUsername'] ?? '',
+      adminPassword: map['adminPassword'] ?? '',
+      range: (map['range'] ?? 100.0).toDouble(),
+      delayMinutes: map['delayMinutes'] ?? 15,
+      createdAt: DateTime.parse(map['createdAt'] ?? DateTime.now().toIso8601String()),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'logo': logo,
+      'location': location,
+      'adminUsername': adminUsername,
+      'adminPassword': adminPassword,
+      'range': range,
+      'delayMinutes': delayMinutes,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
+
+  School copyWith({
+    String? id,
+    String? name,
+    String? logo,
+    String? location,
+    String? adminUsername,
+    String? adminPassword,
+    double? range,
+    int? delayMinutes,
+    DateTime? createdAt,
+  }) {
+    return School(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      logo: logo ?? this.logo,
+      location: location ?? this.location,
+      adminUsername: adminUsername ?? this.adminUsername,
+      adminPassword: adminPassword ?? this.adminPassword,
+      range: range ?? this.range,
+      delayMinutes: delayMinutes ?? this.delayMinutes,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+}
