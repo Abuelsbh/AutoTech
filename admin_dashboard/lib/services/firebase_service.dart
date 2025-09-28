@@ -96,6 +96,14 @@ class FirebaseService {
     }
   }
 
+  static Future<void> updateClassSection(String classSectionId, ClassSection classSection) async {
+    try {
+      await _firestore.collection('class_sections').doc(classSectionId).update(classSection.toMap());
+    } catch (e) {
+      throw Exception('خطأ في تحديث الفصل: $e');
+    }
+  }
+
   static Future<void> deleteClassSection(String classSectionId) async {
     try {
       await _firestore.collection('class_sections').doc(classSectionId).delete();

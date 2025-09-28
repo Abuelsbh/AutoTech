@@ -3,6 +3,7 @@ import '../models/student.dart';
 import '../services/firebase_service.dart';
 import '../services/excel_service.dart';
 import 'add_student_screen.dart';
+import 'edit_student_screen.dart';
 
 class StudentManagementScreen extends StatefulWidget {
   final String schoolId;
@@ -113,6 +114,19 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
       );
     } catch (e) {
       _showErrorDialog('خطأ في تحميل النموذج: $e');
+    }
+  }
+
+  Future<void> _editStudent(Student student) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditStudentScreen(student: student),
+      ),
+    );
+
+    if (result == true) {
+      _loadStudents();
     }
   }
 
@@ -305,7 +319,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                                 ],
                                 onSelected: (value) {
                                   if (value == 'edit') {
-                                    // TODO: تنفيذ التعديل
+                                    _editStudent(student);
                                   } else if (value == 'delete') {
                                     _deleteStudent(student);
                                   }

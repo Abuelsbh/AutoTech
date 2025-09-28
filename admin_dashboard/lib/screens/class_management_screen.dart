@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/class_section.dart';
 import '../services/firebase_service.dart';
 import 'create_class_screen.dart';
+import 'edit_class_screen.dart';
 
 class ClassManagementScreen extends StatefulWidget {
   final String schoolId;
@@ -65,6 +66,19 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _editClass(ClassSection classSection) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditClassScreen(classSection: classSection),
+      ),
+    );
+
+    if (result == true) {
+      _loadClasses();
+    }
   }
 
   Future<void> _deleteClass(ClassSection classSection) async {
@@ -206,7 +220,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                                   ],
                                   onSelected: (value) {
                                     if (value == 'edit') {
-                                      // TODO: تنفيذ التعديل
+                                      _editClass(classSection);
                                     } else if (value == 'delete') {
                                       _deleteClass(classSection);
                                     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/staff.dart';
 import '../services/firebase_service.dart';
 import 'add_staff_screen.dart';
+import 'edit_staff_screen.dart';
 
 class StaffManagementScreen extends StatefulWidget {
   final String schoolId;
@@ -67,6 +68,19 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _editStaff(Staff staff) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditStaffScreen(staff: staff),
+      ),
+    );
+
+    if (result == true) {
+      _loadStaff();
+    }
   }
 
   Future<void> _deleteStaff(Staff staff) async {
@@ -294,7 +308,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                                 ],
                                 onSelected: (value) {
                                   if (value == 'edit') {
-                                    // TODO: تنفيذ التعديل
+                                    _editStaff(staff);
                                   } else if (value == 'delete') {
                                     _deleteStaff(staff);
                                   }

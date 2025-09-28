@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/school.dart';
 import '../services/firebase_service.dart';
 import 'create_school_screen.dart';
+import 'edit_school_screen.dart';
 
 class CompanyDashboardScreen extends StatefulWidget {
   const CompanyDashboardScreen({super.key});
@@ -60,6 +61,19 @@ class _CompanyDashboardScreenState extends State<CompanyDashboardScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _editSchool(School school) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditSchoolScreen(school: school),
+      ),
+    );
+
+    if (result == true) {
+      _loadSchools();
+    }
   }
 
   Future<void> _deleteSchool(School school) async {
@@ -231,7 +245,7 @@ class _CompanyDashboardScreenState extends State<CompanyDashboardScreen> {
                                   ],
                                   onSelected: (value) {
                                     if (value == 'edit') {
-                                      // TODO: تنفيذ التعديل
+                                      _editSchool(school);
                                     } else if (value == 'delete') {
                                       _deleteSchool(school);
                                     }

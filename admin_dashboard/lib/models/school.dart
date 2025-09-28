@@ -8,6 +8,7 @@ class School {
   final double range; // مسافة النطاق بالمتر
   final int delayMinutes; // عدد الدقائق للتنبيه
   final DateTime createdAt;
+  final DateTime? updatedAt;
 
   School({
     required this.id,
@@ -19,6 +20,7 @@ class School {
     this.range = 100.0,
     this.delayMinutes = 15,
     required this.createdAt,
+    this.updatedAt,
   });
 
   factory School.fromMap(Map<String, dynamic> map) {
@@ -32,6 +34,7 @@ class School {
       range: (map['range'] ?? 100.0).toDouble(),
       delayMinutes: map['delayMinutes'] ?? 15,
       createdAt: DateTime.parse(map['createdAt'] ?? DateTime.now().toIso8601String()),
+      updatedAt: map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
     );
   }
 
@@ -46,6 +49,7 @@ class School {
       'range': range,
       'delayMinutes': delayMinutes,
       'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 
