@@ -4,6 +4,7 @@ import 'school_settings_screen.dart';
 import 'class_management_screen.dart';
 import 'student_management_screen.dart';
 import 'staff_management_screen.dart';
+import 'login_screen.dart';
 
 class SchoolAdminDashboardScreen extends StatefulWidget {
   final String schoolId;
@@ -65,139 +66,160 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
   }
 
   Widget _buildDashboard() {
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // إحصائيات سريعة
-            const Text(
-              'نظرة عامة',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // إحصائيات سريعة محسنة
+          const Text(
+            'نظرة عامة',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2D3748),
+            ),
+          ),
+          const SizedBox(height: 20),
+          
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  'إجمالي الطلاب',
+                  _isLoadingStats ? '...' : _stats['students'].toString(),
+                  Icons.people_rounded,
+                  const Color(0xFF667eea),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'إجمالي الطلاب',
-                    _isLoadingStats ? '...' : _stats['students'].toString(),
-                    Icons.people,
-                    Colors.blue,
-                  ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildStatCard(
+                  'الفصول',
+                  _isLoadingStats ? '...' : _stats['classes'].toString(),
+                  Icons.class_rounded,
+                  const Color(0xFF48BB78),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildStatCard(
-                    'الفصول',
-                    _isLoadingStats ? '...' : _stats['classes'].toString(),
-                    Icons.class_,
-                    Colors.green,
-                  ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  'المنسوبين',
+                  _isLoadingStats ? '...' : _stats['staff'].toString(),
+                  Icons.person_rounded,
+                  const Color(0xFFED8936),
                 ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'المنسوبين',
-                    _isLoadingStats ? '...' : _stats['staff'].toString(),
-                    Icons.person,
-                    Colors.orange,
-                  ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildStatCard(
+                  'الوصولات اليوم',
+                  '0', // سيتم تحديثها لاحقاً
+                  Icons.check_circle_rounded,
+                  const Color(0xFF9F7AEA),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildStatCard(
-                    'الوصولات اليوم',
-                    '0', // سيتم تحديثها لاحقاً
-                    Icons.check_circle,
-                    Colors.purple,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
 
-            // إجراءات سريعة
-            const Text(
-              'إجراءات سريعة',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          // إجراءات سريعة محسنة
+          const Text(
+            'إجراءات سريعة',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF2D3748),
+            ),
+          ),
+          const SizedBox(height: 20),
+          
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1.1,
+            children: [
+              _buildQuickActionCard(
+                'إعدادات المدرسة',
+                Icons.settings_rounded,
+                const Color(0xFF667eea),
+                () => _onItemTapped(1),
               ),
-            ),
-            const SizedBox(height: 16),
-            
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.2,
-              children: [
-                _buildQuickActionCard(
-                  'إعدادات المدرسة',
-                  Icons.settings,
-                  Colors.blue,
-                  () => _onItemTapped(1),
-                ),
-                _buildQuickActionCard(
-                  'إدارة الفصول',
-                  Icons.class_,
-                  Colors.green,
-                  () => _onItemTapped(2),
-                ),
-                _buildQuickActionCard(
-                  'إدارة الطلاب',
-                  Icons.people,
-                  Colors.orange,
-                  () => _onItemTapped(3),
-                ),
-                _buildQuickActionCard(
-                  'إدارة المنسوبين',
-                  Icons.person,
-                  Colors.purple,
-                  () => _onItemTapped(4),
-                ),
-              ],
-            ),
-          ],
-        ),
+              _buildQuickActionCard(
+                'إدارة الفصول',
+                Icons.class_rounded,
+                const Color(0xFF48BB78),
+                () => _onItemTapped(2),
+              ),
+              _buildQuickActionCard(
+                'إدارة الطلاب',
+                Icons.people_rounded,
+                const Color(0xFFED8936),
+                () => _onItemTapped(3),
+              ),
+              _buildQuickActionCard(
+                'إدارة المنسوبين',
+                Icons.person_rounded,
+                const Color(0xFF9F7AEA),
+                () => _onItemTapped(4),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(height: 12),
             Text(
               value,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
             ),
+            const SizedBox(height: 4),
             Text(
               title,
               style: const TextStyle(
                 fontSize: 14,
-                color: Colors.grey,
+                color: Color(0xFF718096),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -212,26 +234,49 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
     Color color,
     VoidCallback onTap,
   ) {
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: color, size: 40),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(icon, color: color, size: 28),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2D3748),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -249,51 +294,159 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
     }
   }
 
+  Future<void> _logout() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Row(
+          children: [
+            Icon(
+              Icons.logout_rounded,
+              color: Colors.red,
+              size: 24,
+            ),
+            SizedBox(width: 8),
+            Text(
+              'تسجيل الخروج',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF2D3748),
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'هل أنت متأكد من تسجيل الخروج؟',
+          style: TextStyle(
+            color: Color(0xFF4A5568),
+            fontSize: 16,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            style: TextButton.styleFrom(
+              foregroundColor: const Color(0xFF718096),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: const Text(
+              'تسجيل الخروج',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      // مسح جميع الشاشات والعودة لشاشة تسجيل الدخول
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (route) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text('داشبورد مسؤول المدرسة'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        title: const Text(
+          'داشبورد مسؤول المدرسة',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF2D3748),
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-            icon: const Icon(Icons.logout),
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              onPressed: _logout,
+              icon: const Icon(Icons.logout_rounded),
+              tooltip: 'تسجيل الخروج',
+              color: Colors.red,
+            ),
           ),
         ],
       ),
       body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'الرئيسية',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: const Color(0xFF667eea),
+          unselectedItemColor: Colors.grey[600],
+          backgroundColor: Colors.white,
+          elevation: 0,
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'الإعدادات',
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.class_),
-            label: 'الفصول',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'الطلاب',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'المنسوبين',
-          ),
-        ],
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard_rounded),
+              label: 'الرئيسية',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'الإعدادات',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.class_rounded),
+              label: 'الفصول',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people_rounded),
+              label: 'الطلاب',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'المنسوبين',
+            ),
+          ],
+        ),
       ),
     );
   }

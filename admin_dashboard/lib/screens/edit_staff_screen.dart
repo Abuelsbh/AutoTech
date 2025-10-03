@@ -19,7 +19,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   
-  StaffRole _selectedRole = StaffRole.teacher;
+  List<StaffRole> _selectedRoles = [StaffRole.teacher];
   bool _isLoading = false;
 
   @override
@@ -34,7 +34,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
     _phoneController.text = widget.staff.phone;
     _usernameController.text = widget.staff.username;
     _passwordController.text = widget.staff.password;
-    _selectedRole = widget.staff.role;
+    _selectedRoles = List.from(widget.staff.roles);
   }
 
   @override
@@ -49,6 +49,14 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
 
   Future<void> _updateStaff() async {
     if (!_formKey.currentState!.validate()) return;
+    
+    // Validate that at least one role is selected
+    if (_selectedRoles.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يرجى اختيار دور واحد على الأقل')),
+      );
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -61,7 +69,7 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         phone: _phoneController.text.trim(),
-        role: _selectedRole,
+        roles: _selectedRoles,
         username: _usernameController.text.trim(),
         password: _passwordController.text.trim(),
         createdAt: widget.staff.createdAt,
@@ -207,25 +215,45 @@ class _EditStaffScreenState extends State<EditStaffScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // الدور
-                      DropdownButtonFormField<StaffRole>(
-                        value: _selectedRole,
-                        decoration: const InputDecoration(
-                          labelText: 'الدور *',
-                          prefixIcon: Icon(Icons.work),
-                          border: OutlineInputBorder(),
+                      // الأدوار
+                      const Text(
+                        'الأدوار *',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF374151),
                         ),
-                        items: StaffRole.values.map((role) {
-                          return DropdownMenuItem(
-                            value: role,
-                            child: Text(_getRoleDisplayName(role)),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedRole = value!;
-                          });
-                        },
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          children: StaffRole.values.map((role) {
+                            return CheckboxListTile(
+                              title: Text(_getRoleDisplayName(role)),
+                              value: _selectedRoles.contains(role),
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  if (value == true) {
+                                    _selectedRoles.add(role);
+                                  } else {
+                                    _selectedRoles.remove(role);
+                                  }
+                                  // Ensure at least one role is selected
+                                  if (_selectedRoles.isEmpty) {
+                                    _selectedRoles.add(StaffRole.teacher);
+                                  }
+                                });
+                              },
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ],
                   ),

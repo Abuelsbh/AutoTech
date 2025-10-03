@@ -129,7 +129,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
     }
 
     if (_selectedRole != null) {
-      filtered = filtered.where((staff) => staff.role == _selectedRole).toList();
+      filtered = filtered.where((staff) => staff.roles.contains(_selectedRole!)).toList();
     }
 
     return filtered;
@@ -262,9 +262,9 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                             margin: const EdgeInsets.only(bottom: 8),
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: _getRoleColor(staff.role),
+                                backgroundColor: _getRoleColor(staff.roles.first),
                                 child: Icon(
-                                  _getRoleIcon(staff.role),
+                                  _getRoleIcon(staff.roles.first),
                                   color: Colors.white,
                                 ),
                               ),
@@ -277,7 +277,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('الدور: ${staff.roleDisplayName}'),
+                                  Text('الأدوار: ${staff.roleDisplayName}'),
                                   Text('البريد: ${staff.email}'),
                                   Text('الجوال: ${staff.phone}'),
                                   Text('اسم المستخدم: ${staff.username}'),
