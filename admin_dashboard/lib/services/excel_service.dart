@@ -63,6 +63,20 @@ class ExcelService {
     }
   }
 
+  // استخراج الفصول الفريدة من بيانات الطلاب
+  static List<String> extractUniqueClassSections(List<Map<String, dynamic>> studentsData) {
+    Set<String> uniqueClassSections = {};
+    
+    for (var student in studentsData) {
+      String classSection = student['classSection']?.toString().trim() ?? '';
+      if (classSection.isNotEmpty) {
+        uniqueClassSections.add(classSection);
+      }
+    }
+    
+    return uniqueClassSections.toList();
+  }
+
   static String? _getCellValue(dynamic cell) {
     if (cell == null) return null;
     

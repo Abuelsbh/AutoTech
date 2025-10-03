@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 import '../models/school.dart';
 import '../services/firebase_service.dart';
+import 'location_picker_screen.dart';
 
 class CreateSchoolScreen extends StatefulWidget {
   const CreateSchoolScreen({super.key});
@@ -21,6 +22,9 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
   final _logoUrlController = TextEditingController();
   
   String _logoBase64 = '';
+  double? _selectedLatitude;
+  double? _selectedLongitude;
+  String _selectedAddress = '';
   bool _isLoading = false;
 
   @override
@@ -62,8 +66,42 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
     }
   }
 
+  Future<void> _pickLocation() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+          initialLatitude: _selectedLatitude,
+          initialLongitude: _selectedLongitude,
+          initialAddress: _selectedAddress,
+        ),
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedLatitude = result['latitude'];
+        _selectedLongitude = result['longitude'];
+        _selectedAddress = result['address'];
+        _locationController.text = _selectedAddress;
+      });
+    }
+  }
+
   Future<void> _createSchool() async {
     if (!_formKey.currentState!.validate()) return;
+
+    // التحقق من وجود الشعار
+    if (_logoBase64.isEmpty && _logoUrlController.text.trim().isEmpty) {
+      _showErrorDialog('يرجى اختيار شعار للمدرسة');
+      return;
+    }
+
+    // التحقق من اختيار الموقع
+    if (_selectedLatitude == null || _selectedLongitude == null) {
+      _showErrorDialog('يرجى اختيار موقع المدرسة من الخريطة');
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -75,6 +113,8 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
         name: _nameController.text.trim(),
         logo: _logoBase64.isNotEmpty ? _logoBase64 : _logoUrlController.text.trim(),
         location: _locationController.text.trim(),
+        latitude: _selectedLatitude,
+        longitude: _selectedLongitude,
         adminUsername: _adminUsernameController.text.trim(),
         adminPassword: _adminPasswordController.text.trim(),
         createdAt: DateTime.now(),
@@ -166,14 +206,20 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
                       // موقع المدرسة
                       TextFormField(
                         controller: _locationController,
-                        decoration: const InputDecoration(
+                        readOnly: true,
+                        decoration: InputDecoration(
                           labelText: 'موقع المدرسة *',
-                          prefixIcon: Icon(Icons.location_on),
-                          border: OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.location_on),
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            onPressed: _pickLocation,
+                            icon: const Icon(Icons.map),
+                            tooltip: 'اختيار من الخريطة',
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'يرجى إدخال موقع المدرسة';
+                            return 'يرجى اختيار موقع المدرسة من الخريطة';
                           }
                           return null;
                         },
@@ -182,7 +228,7 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
 
                       // شعار المدرسة
                       const Text(
-                        'شعار المدرسة',
+                        'شعار المدرسة *',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -209,7 +255,13 @@ class _CreateSchoolScreenState extends State<CreateSchoolScreen> {
                                 border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.image, size: 30),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.memory(
+                                  base64Decode(_logoBase64),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                         ],
                       ),

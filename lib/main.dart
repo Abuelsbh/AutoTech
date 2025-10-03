@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rush/rush.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'firebase_options.dart';
 import 'Utilities/fast_http_config.dart';
 import 'Utilities/git_it.dart';
 import 'Utilities/router_config.dart';
@@ -17,6 +20,25 @@ import 'core/Theme/theme_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Firebase
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      print('Firebase initialized successfully');
+      
+      // تهيئة Firebase Database
+      FirebaseDatabase.instance.setPersistenceEnabled(true);
+      print('Firebase Database initialized');
+    } else {
+      print('Firebase already initialized');
+    }
+  } catch (e) {
+    // Firebase already initialized or error occurred
+    print('Firebase initialization error: $e');
+  }
+
   RushSetup.init(
     largeScreens: RushScreenSize.large,
     mediumScreens: RushScreenSize.medium,
@@ -28,6 +50,8 @@ Future<void> main() async {
   FastHttpConfig.init();
 
   await GitIt.initGitIt();
+  
+  print('App initialization completed');
   runApp(
       MultiProvider(
         providers: [

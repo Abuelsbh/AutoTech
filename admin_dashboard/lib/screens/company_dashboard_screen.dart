@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/school.dart';
 import '../services/firebase_service.dart';
+import '../widgets/school_logo_widget.dart';
 import 'create_school_screen.dart';
 import 'edit_school_screen.dart';
 import 'login_screen.dart';
@@ -438,32 +439,19 @@ class _CompanyDashboardScreenState extends State<CompanyDashboardScreen> {
                               ),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.all(20),
-                                leading: Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Color(0xFF667eea),
-                                        Color(0xFF764ba2),
-                                      ],
+                                leading: EnhancedSchoolLogoWidget(
+                                  logo: school.logo,
+                                  size: 60,
+                                  fallbackText: school.name,
+                                  showBorder: true,
+                                  borderColor: Colors.grey.shade200,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
                                     ),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      school.name.isNotEmpty
-                                          ? school.name[0].toUpperCase()
-                                          : 'م',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
+                                  ],
                                 ),
                                 title: Text(
                                   school.name,

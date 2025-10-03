@@ -3,6 +3,8 @@ class School {
   final String name;
   final String logo;
   final String location;
+  final double? latitude; // خط العرض
+  final double? longitude; // خط الطول
   final String adminUsername;
   final String adminPassword;
   final double range; // مسافة النطاق بالمتر
@@ -15,6 +17,8 @@ class School {
     required this.name,
     required this.logo,
     required this.location,
+    this.latitude,
+    this.longitude,
     required this.adminUsername,
     required this.adminPassword,
     this.range = 100.0,
@@ -29,6 +33,8 @@ class School {
       name: map['name'] ?? '',
       logo: map['logo'] ?? '',
       location: map['location'] ?? '',
+      latitude: map['latitude']?.toDouble(),
+      longitude: map['longitude']?.toDouble(),
       adminUsername: map['adminUsername'] ?? '',
       adminPassword: map['adminPassword'] ?? '',
       range: (map['range'] ?? 100.0).toDouble(),
@@ -44,6 +50,8 @@ class School {
       'name': name,
       'logo': logo,
       'location': location,
+      'latitude': latitude,
+      'longitude': longitude,
       'adminUsername': adminUsername,
       'adminPassword': adminPassword,
       'range': range,
@@ -58,6 +66,8 @@ class School {
     String? name,
     String? logo,
     String? location,
+    double? latitude,
+    double? longitude,
     String? adminUsername,
     String? adminPassword,
     double? range,
@@ -69,6 +79,8 @@ class School {
       name: name ?? this.name,
       logo: logo ?? this.logo,
       location: location ?? this.location,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
       adminUsername: adminUsername ?? this.adminUsername,
       adminPassword: adminPassword ?? this.adminPassword,
       range: range ?? this.range,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../models/school.dart';
 import '../services/firebase_service.dart';
+import '../widgets/school_logo_widget.dart';
 import 'school_settings_screen.dart';
 import 'class_management_screen.dart';
 import 'student_management_screen.dart';
@@ -26,6 +28,8 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
     'staff': 0,
   };
   bool _isLoadingStats = true;
+  School? _school;
+  bool _isLoadingSchool = true;
 
   final List<Widget> _screens = [];
 
@@ -33,6 +37,7 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
   void initState() {
     super.initState();
     _loadStats();
+    _loadSchool();
     _screens.addAll([
       _buildDashboard(),
       SchoolSettingsScreen(schoolId: widget.schoolId),
@@ -62,6 +67,21 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
         };
       });
       print('تحذير: لا يمكن الاتصال بـ Firebase، استخدام القيم الافتراضية');
+    }
+  }
+
+  Future<void> _loadSchool() async {
+    try {
+      final school = await FirebaseService.getSchool(widget.schoolId);
+      setState(() {
+        _school = school;
+        _isLoadingSchool = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingSchool = false;
+      });
+      print('تحذير: لا يمكن تحميل معلومات المدرسة: $e');
     }
   }
 
@@ -288,9 +308,10 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
       _selectedIndex = index;
     });
     
-    // تحديث الإحصائيات عند العودة للداشبورد
+    // تحديث الإحصائيات ومعلومات المدرسة عند العودة للداشبورد
     if (index == 0) {
       _loadStats();
+      _loadSchool();
     }
   }
 
@@ -368,12 +389,57 @@ class _SchoolAdminDashboardScreenState extends State<SchoolAdminDashboardScreen>
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
-        title: const Text(
-          'داشبورد مسؤول المدرسة',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+        title: Row(
+          children: [
+            if (_school != null) ...[
+              EnhancedSchoolLogoWidget(
+                logo: _school!.logo,
+                size: 40,
+                fallbackText: _school!.name,
+                showBorder: true,
+                borderColor: Colors.grey.shade200,
+                shadows: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _school!.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Color(0xFF2D3748),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      'داشبورد مسؤول المدرسة',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ] else ...[
+              const Text(
+                'داشبورد مسؤول المدرسة',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ],
         ),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2D3748),

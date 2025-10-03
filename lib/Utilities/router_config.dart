@@ -16,6 +16,7 @@ BuildContext? get currentContext_ =>
 class GoRouterConfig{
   static GoRouter get router => _router;
   static final GoRouter _router = GoRouter(
+    initialLocation: SplashScreen.routeName,
     routes: <RouteBase>[
       GoRoute(
         path: SplashScreen.routeName,

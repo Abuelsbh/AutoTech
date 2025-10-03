@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:auto_tech/core/Language/app_languages.dart';
 import 'package:auto_tech/core/Language/locales.dart';
+import 'package:auto_tech/Modules/Auth/auth_controller.dart';
 
 import '../../generated/assets.dart';
 
@@ -19,11 +20,14 @@ class RoleSelectionScreen extends StatefulWidget {
 
 class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
   String? selectedRole;
+  final AuthController _authController = AuthController();
 
   @override
   void initState() {
     super.initState();
     selectedRole = "guardian"; // Default selection
+    // تعيين الدور الافتراضي في AuthController
+    _authController.setSelectedRole("guardian");
   }
 
   @override
@@ -144,6 +148,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         setState(() {
           selectedRole = value;
         });
+        // حفظ الدور المختار في AuthController
+        _authController.setSelectedRole(value);
       },
       child: Container(
         width: double.infinity,

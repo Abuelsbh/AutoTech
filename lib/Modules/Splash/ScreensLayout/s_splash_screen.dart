@@ -29,7 +29,31 @@ class _SmallSplashScreenState extends StateX<SmallSplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Image.asset(Assets.imagesSplash, fit: BoxFit.contain,),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              Assets.imagesSplash, 
+              fit: BoxFit.contain,
+              width: 200,
+              height: 200,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'AutoTech',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const CircularProgressIndicator(),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -5,6 +5,8 @@ class Assets {
   static const String i18nAr = 'i18n/ar.json';
   static const String i18nEn = 'i18n/en.json';
   static const String iconsBrush = 'assets/icons/brush.svg';
+  static const String iconsImage = 'assets/icons/image.svg';
+  static const String iconsQRCode = 'assets/icons/QRCode.svg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesSplash = 'assets/images/splash.png';
   static const String imagesSplash1 = 'assets/images/splash1.png';

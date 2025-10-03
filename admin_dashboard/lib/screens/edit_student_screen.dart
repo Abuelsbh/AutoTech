@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/student.dart';
+import '../models/class_section.dart';
 import '../services/firebase_service.dart';
 
 class EditStudentScreen extends StatefulWidget {
@@ -15,30 +16,55 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idNumberController = TextEditingController();
   final _nameController = TextEditingController();
-  final _classSectionController = TextEditingController();
   final _guardianNameController = TextEditingController();
   final _guardianPhoneController = TextEditingController();
+  
+  List<ClassSection> _classes = [];
+  String? _selectedClassId;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeFields();
+    _loadClasses();
+  }
+
+  Future<void> _loadClasses() async {
+    try {
+      final classes = await FirebaseService.getClassSections(widget.student.schoolId);
+      setState(() {
+        _classes = classes;
+        _initializeFields();
+      });
+    } catch (e) {
+      _showErrorDialog('خطأ في تحميل الفصول: $e');
+    }
   }
 
   void _initializeFields() {
     _idNumberController.text = widget.student.idNumber;
     _nameController.text = widget.student.name;
-    _classSectionController.text = widget.student.classSection;
     _guardianNameController.text = widget.student.guardianName;
     _guardianPhoneController.text = widget.student.guardianPhone;
+    
+    // البحث عن الفصل الحالي في قائمة الفصول
+    final currentClass = _classes.firstWhere(
+      (c) => c.name == widget.student.classSection,
+      orElse: () => ClassSection(
+        id: '',
+        schoolId: widget.student.schoolId,
+        name: widget.student.classSection,
+        description: '',
+        createdAt: DateTime.now(),
+      ),
+    );
+    _selectedClassId = currentClass.id;
   }
 
   @override
   void dispose() {
     _idNumberController.dispose();
     _nameController.dispose();
-    _classSectionController.dispose();
     _guardianNameController.dispose();
     _guardianPhoneController.dispose();
     super.dispose();
@@ -52,12 +78,16 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     });
 
     try {
+      final selectedClass = _classes.firstWhere(
+        (c) => c.id == _selectedClassId,
+      );
+
       final updatedStudent = Student(
         id: widget.student.id,
         schoolId: widget.student.schoolId,
         idNumber: _idNumberController.text.trim(),
         name: _nameController.text.trim(),
-        classSection: _classSectionController.text.trim(),
+        classSection: selectedClass.name,
         guardianName: _guardianNameController.text.trim(),
         guardianPhone: _guardianPhoneController.text.trim(),
         createdAt: widget.student.createdAt,
@@ -167,18 +197,28 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      // الصف والشعبة
-                      TextFormField(
-                        controller: _classSectionController,
+                      // الفصل والشعبة
+                      DropdownButtonFormField<String>(
+                        value: _selectedClassId,
                         decoration: const InputDecoration(
-                          labelText: 'الصف والشعبة *',
+                          labelText: 'الفصل والشعبة *',
                           prefixIcon: Icon(Icons.class_),
                           border: OutlineInputBorder(),
-                          hintText: 'grade1 A, grade1.1, الصف الأول أ',
                         ),
+                        items: _classes.map((classSection) {
+                          return DropdownMenuItem(
+                            value: classSection.id,
+                            child: Text(classSection.name),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedClassId = value;
+                          });
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'يرجى إدخال الصف والشعبة';
+                            return 'يرجى اختيار الفصل';
                           }
                           return null;
                         },

@@ -42,7 +42,7 @@ class _MobileVerificationScreenState extends StateX<MobileVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    
+    print( _phoneNumber.substring(_phoneNumber.length - 4));
     // استقبال البيانات من الشاشة السابقة
     if (widget.phoneData != null) {
       _phoneNumber = widget.phoneData!['phoneNumber'] ?? '+966501234567';
@@ -260,8 +260,12 @@ class _MobileVerificationScreenState extends StateX<MobileVerificationScreen> {
                           focusedPinTheme: _isError ? errorPinTheme : defaultPinTheme,
                           submittedPinTheme: _isError ? errorPinTheme : defaultPinTheme,
                           showCursor: true,
-                          onCompleted: (pin) {
-                            if (pin == con.otp.toString()) {
+                          onCompleted: (pin) async {
+                            // التحقق من الكود وتسجيل الدخول في Firebase
+                            bool isVerified = await con.verifyCodeAndSignIn(enteredCode: pin);
+                            
+                            if (isVerified) {
+                              // تم التحقق بنجاح وتسجيل الدخول في Firebase
                               GoRouter.of(context).goNamed('home');
                             } else {
                               setState(() {

@@ -192,12 +192,39 @@ class FirebaseService {
     }
   }
 
-  // رفع ملف Excel للطلاب
+  // رفع ملف Excel للطلاب مع إنشاء الفصول تلقائياً
   static Future<void> uploadStudentsFromExcel(
       String schoolId, List<Map<String, dynamic>> studentsData) async {
     try {
+      // استخراج الفصول الفريدة من بيانات الطلاب
+      final uniqueClassSections = _extractUniqueClassSections(studentsData);
+      
+      // الحصول على الفصول الموجودة حالياً
+      final existingClassSections = await getClassSections(schoolId);
+      final existingClassNames = existingClassSections.map((c) => c.name).toSet();
+      
+      // إنشاء الفصول الجديدة
+      final newClassSections = uniqueClassSections
+          .where((className) => !existingClassNames.contains(className))
+          .toList();
+      
       final batch = _firestore.batch();
       
+      // إضافة الفصول الجديدة
+      for (String className in newClassSections) {
+        final classSection = ClassSection(
+          id: '',
+          schoolId: schoolId,
+          name: className,
+          description: 'تم إنشاؤه تلقائياً من ملف Excel',
+          createdAt: DateTime.now(),
+        );
+        
+        final classDocRef = _firestore.collection('class_sections').doc();
+        batch.set(classDocRef, classSection.toMap());
+      }
+      
+      // إضافة الطلاب
       for (var studentData in studentsData) {
         final student = Student(
           id: '',
@@ -215,11 +242,30 @@ class FirebaseService {
       }
       
       await batch.commit();
-      print('تم رفع ${studentsData.length} طالب بنجاح في Firebase');
+      
+      String message = 'تم رفع ${studentsData.length} طالب بنجاح';
+      if (newClassSections.isNotEmpty) {
+        message += ' وتم إنشاء ${newClassSections.length} فصل جديد';
+      }
+      print(message);
     } catch (e) {
       print('خطأ في رفع بيانات الطلاب: $e');
       throw Exception('خطأ في رفع بيانات الطلاب: $e');
     }
+  }
+
+  // استخراج الفصول الفريدة من بيانات الطلاب
+  static List<String> _extractUniqueClassSections(List<Map<String, dynamic>> studentsData) {
+    Set<String> uniqueClassSections = {};
+    
+    for (var student in studentsData) {
+      String classSection = student['classSection']?.toString().trim() ?? '';
+      if (classSection.isNotEmpty) {
+        uniqueClassSections.add(classSection);
+      }
+    }
+    
+    return uniqueClassSections.toList();
   }
 
   // إحصائيات المدرسة

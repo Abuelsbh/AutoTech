@@ -75,11 +75,33 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
       final studentsData = await ExcelService.readStudentsFromExcel();
       
       if (studentsData.isNotEmpty) {
+        // استخراج الفصول الفريدة لعرضها في رسالة التأكيد
+        final uniqueClassSections = ExcelService.extractUniqueClassSections(studentsData);
+        
         final confirmed = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('تأكيد الرفع'),
-            content: Text('سيتم رفع ${studentsData.length} طالب. هل تريد المتابعة؟'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('سيتم رفع ${studentsData.length} طالب.'),
+                const SizedBox(height: 8),
+                const Text('الفصول الموجودة في الملف:'),
+                const SizedBox(height: 4),
+                ...uniqueClassSections.map((className) => 
+                  Text('• $className', style: const TextStyle(fontSize: 12))
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'ملاحظة: سيتم إنشاء الفصول الجديدة تلقائياً إذا لم تكن موجودة.',
+                  style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                ),
+                const SizedBox(height: 8),
+                const Text('هل تريد المتابعة؟'),
+              ],
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
