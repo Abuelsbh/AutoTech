@@ -22,7 +22,7 @@ class TextStyleHelper{
   }
 
   TextStyle  getTextStyle({required double fontSize,FontWeight? fontWeight}) =>
-      _fontFamily()(fontSize: (12*_fSS).sp,fontWeight: fontWeight,color: ThemeClass.of(context).darkGreyColor);
+      _fontFamily()(fontSize: (12*_fSS).sp,fontWeight: fontWeight,color: ThemeClass.of(context).textMainColor);
 
 
   TextStyle get s12RegTextStyle => getTextStyle(fontSize: 12);

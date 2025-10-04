@@ -6,6 +6,10 @@ class UserModel {
   final String? role;
   final String? uid;
   final DateTime? createdAt;
+  final String? name;
+  final String? className;
+  final String? schoolName;
+
 
   UserModel({
     this.token,
@@ -14,6 +18,9 @@ class UserModel {
     this.role,
     this.uid,
     this.createdAt,
+    this.name,
+    this.className,
+    this.schoolName,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -23,6 +30,9 @@ class UserModel {
     role: json["role"],
     uid: json["uid"],
     createdAt: json["createdAt"] != null ? DateTime.parse(json["createdAt"]) : null,
+    name: json["name"],
+    className: json["className"],
+    schoolName: json["schoolName"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +42,9 @@ class UserModel {
     "role": role,
     "uid": uid,
     "createdAt": createdAt?.toIso8601String(),
+    "name": name,
+    "className": className,
+    "schoolName": schoolName,
   };
 
   // إنشاء نسخة محدثة من المستخدم

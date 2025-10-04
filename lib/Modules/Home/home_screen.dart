@@ -1,109 +1,70 @@
+import 'package:auto_tech/Modules/Home/home_controller.dart';
+import 'package:auto_tech/Widgets/student_item_widget.dart';
+import 'package:auto_tech/core/Language/locales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:auto_tech/core/Language/app_languages.dart';
+import 'package:gap/gap.dart';
+import 'package:state_extended/state_extended.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../Utilities/strings.dart';
+import '../../Utilities/theme_helper.dart';
+import '../../Widgets/condition_widget.dart';
+import '../../Widgets/empty_widget.dart';
+
+class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
 
   const HomeScreen({super.key});
 
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends StateX<HomeScreen> {
+
+  _HomeScreenState() : super(controller: HomeController()) {
+    con = HomeController();
+  }
+  late HomeController con;
+
+  @override
+  void initState() {
+
+    con.fetchStudentsByGuardianPhone("966562030903");
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    final appLang = Provider.of<AppLanguage>(context);
-    final isRTL = appLang.appLang == Languages.ar;
-    
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.white,
-              Colors.grey.shade50,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Directionality(
-            textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Welcome message
-                  Container(
-                    width: 120.w,
-                    height: 120.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.r),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF6B46C1), // Purple
-                          Color(0xFFEC4899), // Pink
-                          Color(0xFFF97316), // Orange
-                        ],
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.check_circle,
-                      size: 60.sp,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  
-                  Text(
-                    "Welcome to Auto Nida!",
-                    style: GoogleFonts.cairo(
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1E293B),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16.h),
-                  
-                  Text(
-                    "Your school management app is ready to use.",
-                    style: GoogleFonts.inter(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF64748B),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 50.h),
-                  
-                  // Language toggle button
-                  ElevatedButton(
-                    onPressed: () {
-                      appLang.changeLanguage();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1E40AF),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28.r),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      "Toggle Language / تبديل اللغة",
-                      style: GoogleFonts.inter(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+      backgroundColor: ThemeClass.of(context).background,
+      body:CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          ConditionWidget(
+            condition: con.students.isEmpty,
+            conditionWidget: SliverToBoxAdapter(
+              child: Center(
+                child: EmptyWidget(massage: Strings.noData.tr),
               ),
             ),
-          ),
-        ),
+            child: SliverList.separated(
+              itemBuilder: (context, index) {
+                return StudentItemWidget(
+                  items: con.optionSetting(context, con.students[index]),
+                  studentModel: con.students[index],
+                );
+              },
+              separatorBuilder: (_, __) => Gap(0.h),
+              itemCount: con.students.length,
+            ),
+          )
+        ],
       ),
     );
   }

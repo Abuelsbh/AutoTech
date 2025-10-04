@@ -16,7 +16,7 @@ class BottomSheetHelper {
       barrierColor: Colors.black.withOpacity(0.1),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(radius??44.r))),
-      backgroundColor:backgroundColor?? ThemeClass.of(context).backGroundColor,
+      backgroundColor:backgroundColor?? ThemeClass.of(context).background,
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) => widget,

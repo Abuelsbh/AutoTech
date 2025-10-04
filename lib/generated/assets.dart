@@ -5,8 +5,14 @@ class Assets {
   static const String i18nAr = 'i18n/ar.json';
   static const String i18nEn = 'i18n/en.json';
   static const String iconsBrush = 'assets/icons/brush.svg';
+  static const String iconsCanteen = 'assets/icons/canteen.svg';
+  static const String iconsDetails = 'assets/icons/details.svg';
+  static const String iconsDriver = 'assets/icons/driver.svg';
   static const String iconsImage = 'assets/icons/image.svg';
+  static const String iconsPermission = 'assets/icons/permission.svg';
   static const String iconsQRCode = 'assets/icons/QRCode.svg';
+  static const String iconsSickLeave = 'assets/icons/sickLeave.svg';
+  static const String iconsTransaction = 'assets/icons/transaction.svg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesSplash = 'assets/images/splash.png';
   static const String imagesSplash1 = 'assets/images/splash1.png';

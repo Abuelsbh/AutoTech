@@ -9,6 +9,7 @@ class FastHttpConfig{
     FastHttp.initialize(
       genericDataKey: "data",
       checkStatusKey: "status",
+      checkResponseIsSuccess: (dynamic response) => response != null,
       getErrorMessageFromResponse: (dynamic response)=> response.toString(),
       onGetResponseStatusCode: (int statusCode){
         switch (statusCode) {

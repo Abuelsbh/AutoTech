@@ -18,7 +18,7 @@ class SplashController extends StateXController {
       if(SharedPref.isLogin()){
         GoRouter.of(context).goNamed('home');
       }else{
-        GoRouter.of(context).goNamed('language-selection');
+        GoRouter.of(context).goNamed('home');
       }
     }
   }

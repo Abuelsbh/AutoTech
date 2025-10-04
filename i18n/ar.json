@@ -47,5 +47,14 @@
   "didnt_receive_code": "لم تستلم الرمز؟",
   "resend_code": "إعادة إرسال الرمز",
   "contact_support": "اتصل بالدعم",
-  "verify_code": "تحقق من الرمز"
+  "verify_code": "تحقق من الرمز",
+  "viewQrCode": "عرض رمز الاستجابة السريعة",
+  "updatePhoto": "تحديث الصورة",
+  "canteen": "المطعم",
+  "sickLeave": "إجازة مرضية",
+  "viewDetails": "عرض التفاصيل",
+  "permission": "الإذن",
+  "transactionsLog": "سجل المعاملات",
+  "driverLocation": "موقع السائق",
+  "noData": "لا يوجد بيانات"
 }

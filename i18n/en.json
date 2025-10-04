@@ -47,5 +47,14 @@
   "didnt_receive_code": "Didn't receive the code?",
   "resend_code": "Resend Code",
   "contact_support": "Contact Support",
-  "verify_code": "Verify Code"
+  "verify_code": "Verify Code",
+  "viewQrCode": "View QR Code",
+  "updatePhoto": "Update Photo",
+  "canteen": "Canteen",
+  "sickLeave": "Sick Leave",
+  "viewDetails": "View Details",
+  "permission": "Permission",
+  "transactionsLog": "Transactions Log",
+  "driverLocation": "Driver Location",
+  "noData": "No Data"
 }

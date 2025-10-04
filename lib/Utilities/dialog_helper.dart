@@ -23,7 +23,7 @@ class DialogHelper{
         return Dialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(radius??40.r)),
-          backgroundColor:backgroundColor?? ThemeClass.of(context).backGroundColor,
+          backgroundColor:backgroundColor?? ThemeClass.of(context).background,
           insetPadding:insetPadding?? EdgeInsets.symmetric(horizontal: 24.w,vertical: 24.h),
           child: dialogWidget,
         );
