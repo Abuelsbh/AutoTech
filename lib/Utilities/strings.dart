@@ -11,4 +11,8 @@ class Strings {
   static const String transactionsLog = "transactionsLog";
   static const String driverLocation = "driverLocation";
   static const String noData = "noData";
+  static const String home = "home";
+  static const String help = "help";
+  static const String profile = "profile";
+
 }

@@ -8,7 +8,9 @@ import 'package:state_extended/state_extended.dart';
 
 import '../../Utilities/strings.dart';
 import '../../Utilities/theme_helper.dart';
+import '../../Widgets/bottom_navbar_widget.dart';
 import '../../Widgets/condition_widget.dart';
+import '../../Widgets/custom_app_bar_widget.dart';
 import '../../Widgets/empty_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,29 +44,45 @@ class _HomeScreenState extends StateX<HomeScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      bottomNavigationBar: const BottomNavBarWidget(selected: SelectedBottomNavBar.home),
       backgroundColor: ThemeClass.of(context).background,
-      body:CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          ConditionWidget(
-            condition: con.students.isEmpty,
-            conditionWidget: SliverToBoxAdapter(
-              child: Center(
-                child: EmptyWidget(massage: Strings.noData.tr),
+      appBar: CustomAppBarWidget(
+        name: 'Mohammed',
+        //profileImage: con., // or network URL
+        hasNotification: false,
+        onNotificationTap: () {
+          // Handle notification tap
+        },
+        onProfileTap: () {
+          // Handle profile tap
+        },
+      ),
+      body:SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+          
+        
+            ConditionWidget(
+              condition: con.students.isEmpty,
+              conditionWidget: SliverToBoxAdapter(
+                child: Center(
+                  child: EmptyWidget(massage: Strings.noData.tr),
+                ),
               ),
-            ),
-            child: SliverList.separated(
-              itemBuilder: (context, index) {
-                return StudentItemWidget(
-                  items: con.optionSetting(context, con.students[index]),
-                  studentModel: con.students[index],
-                );
-              },
-              separatorBuilder: (_, __) => Gap(0.h),
-              itemCount: con.students.length,
-            ),
-          )
-        ],
+              child: SliverList.separated(
+                itemBuilder: (context, index) {
+                  return StudentItemWidget(
+                    items: con.optionSetting(context, con.students[index]),
+                    studentModel: con.students[index],
+                  );
+                },
+                separatorBuilder: (_, __) => Gap(0.h),
+                itemCount: con.students.length,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

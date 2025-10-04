@@ -56,5 +56,8 @@
   "permission": "الإذن",
   "transactionsLog": "سجل المعاملات",
   "driverLocation": "موقع السائق",
-  "noData": "لا يوجد بيانات"
+  "noData": "لا يوجد بيانات",
+  "home": "الرئيسية",
+  "help": "المساعده",
+  "profile": "الملف الشخصي"
 }

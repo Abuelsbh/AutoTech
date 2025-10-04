@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:auto_tech/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,31 +47,36 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
       ),
       body: Stack(
         children: [
-          // Background decorative elements
-          _buildBackgroundElements(),
-          
-          // Main content
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Assets.imagesBackground),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+
           SafeArea(
             child: Padding(
               padding: EdgeInsets.all(20.w),
               child: Column(
                 children: [
                   SizedBox(height: 40.h),
-                  
+
                   // Current Photo Section
                   _buildCurrentPhotoSection(),
-                  
+
                   SizedBox(height: 60.h),
-                  
+
                   // Action Buttons
                   _buildActionButtons(),
-                  
+
                   const Spacer(),
                 ],
               ),
             ),
           ),
-          
+
           // Loading overlay
           if (_isLoading)
             Container(
@@ -86,21 +92,13 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
     );
   }
 
-  Widget _buildBackgroundElements() {
-    return Positioned.fill(
-      child: CustomPaint(
-        painter: BackgroundPainter(),
-      ),
-    );
-  }
-
   Widget _buildCurrentPhotoSection() {
     return Column(
       children: [
         // Current Photo Circle
         Container(
-          width: 150.w,
-          height: 150.w,
+          width: 120.w,
+          height: 120.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: Colors.grey[300]!, width: 3),
@@ -136,8 +134,8 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
         // It's a URL
         return Image.network(
           studentImageData,
-          width: 150.w,
-          height: 150.w,
+          width: 120.w,
+          height: 120.w,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return _buildFallbackImage();
@@ -158,8 +156,8 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
       
       return Image.memory(
         base64Decode(cleanBase64),
-        width: 150.w,
-        height: 150.w,
+        width: 120.w,
+        height: 120.w,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return _buildFallbackImage();
@@ -172,8 +170,8 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
 
   Widget _buildFallbackImage() {
     return Container(
-      width: 150.w,
-      height: 150.w,
+      width: 120.w,
+      height: 120.w,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         shape: BoxShape.circle,
@@ -216,17 +214,7 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
         ),
         
         SizedBox(height: 20.h),
-        
-        // Alternative: Use both sources
-        SizedBox(
-          width: double.infinity,
-          child: _buildActionButton(
-            icon: Icons.photo_library,
-            title: 'Choose from Gallery or Camera',
-            color: Colors.blue,
-            onTap: _showImageSourceDialog,
-          ),
-        ),
+
       ],
     );
   }
@@ -389,37 +377,6 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
     }
   }
 
-  void _showImageSourceDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Choose Image Source'),
-          content: const Text('Select how you want to add a photo:'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _takePicture();
-              },
-              child: const Text('Camera'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _uploadPhoto();
-              },
-              child: const Text('Gallery'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   bool _isBase64String(String data) {
     return data.startsWith('data:image/') || 
@@ -464,68 +421,3 @@ class _UpdatePhotoScreenState extends State<UpdatePhotoScreen> {
     );
   }
 }
-
-class BackgroundPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue.withOpacity(0.05)
-      ..style = PaintingStyle.fill;
-
-    // Draw hexagons
-    _drawHexagon(canvas, paint, Offset(size.width * 0.1, size.height * 0.2));
-    _drawHexagon(canvas, paint, Offset(size.width * 0.8, size.height * 0.6));
-    
-    // Draw other shapes
-    _drawGraduationCap(canvas, paint, Offset(size.width * 0.85, size.height * 0.15));
-    _drawDocument(canvas, paint, Offset(size.width * 0.15, size.height * 0.85));
-    _drawMagnifyingGlass(canvas, paint, Offset(size.width * 0.5, size.height * 0.9));
-  }
-
-  void _drawHexagon(Canvas canvas, Paint paint, Offset center) {
-    final path = Path();
-    final radius = 30.0;
-    
-    for (int i = 0; i < 6; i++) {
-      final angle = (i * 60.0) * (3.14159 / 180.0);
-      final x = center.dx + radius * cos(angle);
-      final y = center.dy + radius * sin(angle);
-      
-      if (i == 0) {
-        path.moveTo(x, y);
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-    path.close();
-    
-    canvas.drawPath(path, paint);
-  }
-
-  void _drawGraduationCap(Canvas canvas, Paint paint, Offset center) {
-    // Simple graduation cap shape
-    final rect = RRect.fromRectAndRadius(
-      Rect.fromCenter(center: center, width: 40, height: 30),
-      const Radius.circular(8),
-    );
-    canvas.drawRRect(rect, paint);
-  }
-
-  void _drawDocument(Canvas canvas, Paint paint, Offset center) {
-    // Simple document shape
-    final rect = RRect.fromRectAndRadius(
-      Rect.fromCenter(center: center, width: 35, height: 45),
-      const Radius.circular(4),
-    );
-    canvas.drawRRect(rect, paint);
-  }
-
-  void _drawMagnifyingGlass(Canvas canvas, Paint paint, Offset center) {
-    // Simple magnifying glass shape
-    canvas.drawCircle(center, 20, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-

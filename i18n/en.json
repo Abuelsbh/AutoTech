@@ -56,5 +56,9 @@
   "permission": "Permission",
   "transactionsLog": "Transactions Log",
   "driverLocation": "Driver Location",
-  "noData": "No Data"
+  "noData": "No Data",
+  "home": "Home",
+  "help": "Help",
+  "profile": "Profile"
+
 }
