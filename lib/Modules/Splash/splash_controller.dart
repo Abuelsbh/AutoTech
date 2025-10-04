@@ -1,3 +1,5 @@
+import 'package:auto_tech/Modules/Home/home_screen.dart';
+import 'package:auto_tech/Modules/LanguageSelection/language_selection_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:state_extended/state_extended.dart';
 import '../../Utilities/shared_preferences.dart';
@@ -16,7 +18,7 @@ class SplashController extends StateXController {
     await Future.delayed(const Duration(seconds: 3));
     if(context.mounted) {
       if(SharedPref.isLogin()){
-        GoRouter.of(context).goNamed('home');
+        GoRouter.of(context).goNamed('language-selection');
       }else{
         GoRouter.of(context).goNamed('home');
       }

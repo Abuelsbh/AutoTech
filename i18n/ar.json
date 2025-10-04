@@ -59,5 +59,19 @@
   "noData": "لا يوجد بيانات",
   "home": "الرئيسية",
   "help": "المساعده",
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+  "name": "الاسم",
+  "phone": "الهاتف",
+  "registered_on": "مسجل في",
+  "current_profile_type": "نوع الملف الشخصي الحالي",
+  "guardian_delegate": "ولي أمر/مفوض",
+  "actions": "الإجراءات",
+  "change_language": "تغيير اللغة",
+  "change_profile": "تغيير الملف الشخصي",
+  "delegator_settings": "إعدادات المفوض",
+  "home_location": "موقع المنزل",
+  "log_out": "تسجيل الخروج",
+  "delete_account_permanently": "حذف الحساب نهائياً",
+  "edit_profile": "تعديل الملف الشخصي",
+  "no_data": "لم يتم العثور على أي بيانات مرتبطة برقمك"
 }

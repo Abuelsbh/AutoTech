@@ -2,6 +2,7 @@
 import 'package:auto_tech/Models/student_model.dart';
 import 'package:auto_tech/Utilities/router_config.dart';
 import 'package:auto_tech/core/Language/locales.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:state_extended/state_extended.dart';
@@ -24,16 +25,17 @@ class HomeController extends StateXController {
   /// List of students to display
   List<StudentModel> students = [];
 
+  String? myNumber;
 
   /// Fetch students by guardian phone number
-  Future<void> fetchStudentsByGuardianPhone(String guardianPhone) async {
+  Future<void> fetchStudentsByGuardianPhone() async {
     setState(() {
       loading = true;
     });
 
     try {
       final result = await HomeDataHandler.getStudentsByGuardianPhone(
-        guardianPhone: guardianPhone,
+        guardianPhone: myNumber??'',
       );
 
       result.fold(
@@ -49,7 +51,6 @@ class HomeController extends StateXController {
             students = studentList;
             loading = false;
           });
-          print('Found ${studentList.length} students for guardian phone: $guardianPhone');
         },
       );
     } catch (e) {
@@ -59,6 +60,15 @@ class HomeController extends StateXController {
         loading = false;
       });
     }
+  }
+
+  void setUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    myNumber = user?.email?.split('@').first??'';
+  }
+
+  Future<void> refreshStudents() async {
+    await fetchStudentsByGuardianPhone();
   }
 
   /// Fetch all students

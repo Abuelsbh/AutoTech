@@ -9,6 +9,8 @@ import '../Modules/RoleSelection/role_selection_screen.dart';
 import '../Modules/Auth/login_register_screen.dart';
 import '../Modules/Auth/mobile_verification_screen.dart';
 import '../Modules/Home/home_screen.dart';
+import '../Modules/Help/help_support_screen.dart';
+import '../Modules/Profile/profile_screen.dart';
 
 BuildContext? get currentContext_ =>
     GoRouterConfig.router.routerDelegate.navigatorKey.currentContext;
@@ -114,6 +116,28 @@ class GoRouterConfig{
           return getCustomTransitionPage(
             state: state,
             child: const HomeScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        path: HelpSupportScreen.routeName,
+        name: 'helpSupport',
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const HelpSupportScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        path: ProfileScreen.routeName,
+        name: 'profile',
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const ProfileScreen(),
           );
         },
         routes: const <RouteBase>[],

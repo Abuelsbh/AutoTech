@@ -1,4 +1,6 @@
 import 'package:auto_tech/Modules/Home/home_screen.dart';
+import 'package:auto_tech/Modules/Help/help_support_screen.dart';
+import 'package:auto_tech/Modules/Profile/profile_screen.dart';
 import 'package:auto_tech/core/Language/locales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,24 +90,18 @@ class _BottomNavBarItemWidgetState extends State<_BottomNavBarItemWidget> {
   Widget build(BuildContext context) {
     return InkWell(
           onTap: widget.model.onTap ?? () {
-            // منع فتح الـ menu مرة أخرى إذا كان مختار حالياً
-            // if(widget.model.routeName == "menu") {
-            //   if (widget.isSelected) return;
-            //   BottomSheetHelper.bottomSheet(
-            //     context: currentContext_!,
-            //     widget: const SettingsScreen(),
-            //   );
-            // }
-            //
-            //
-            // else if (widget.model.routeName == ProfileScreen.routeName) {
-            //   BottomSheetHelper.bottomSheet(
-            //     context: context,
-            //     widget: MainMenuBottomSheet(currentScreen: GoRouter.of(context).location),
-            //   );
-            // } else {
-            //   context.pushNamed(widget.model.routeName);
-            // }
+            // Navigate to the selected route
+            if (widget.model.routeName.isNotEmpty) {
+              if (widget.model.routeName == HelpSupportScreen.routeName) {
+                context.pushNamed('helpSupport');
+              } else if (widget.model.routeName == HomeScreen.routeName) {
+                context.pushNamed('home');
+              } else if (widget.model.routeName == ProfileScreen.routeName) {
+                context.pushNamed('profile');
+              } else {
+                context.pushNamed(widget.model.routeName);
+              }
+            }
           },
       child:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -183,14 +179,14 @@ class _BottomNavBarItemModel {
     title: Strings.help.tr,
     iconPath: Assets.iconsHelp,
     type: SelectedBottomNavBar.help,
-    routeName: HomeScreen.routeName,
+    routeName: HelpSupportScreen.routeName,
   );
 
   static _BottomNavBarItemModel profile = _BottomNavBarItemModel(
     title: Strings.profile.tr,
     iconPath: Assets.iconsProfile,
     type: SelectedBottomNavBar.profile,
-    routeName: HomeScreen.routeName,
+    routeName: ProfileScreen.routeName,
   );
 
 }

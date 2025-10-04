@@ -59,6 +59,20 @@
   "noData": "No Data",
   "home": "Home",
   "help": "Help",
-  "profile": "Profile"
+  "profile": "Profile",
+  "name": "Name",
+  "phone": "Phone",
+  "registered_on": "Registered On",
+  "current_profile_type": "Current Profile Type",
+  "guardian_delegate": "Guardian/Delegate",
+  "actions": "Actions",
+  "change_language": "Change Language",
+  "change_profile": "Change Profile",
+  "delegator_settings": "Delegator Settings",
+  "home_location": "Home Location",
+  "log_out": "Log Out",
+  "delete_account_permanently": "Delete Account Permanently",
+  "edit_profile": "Edit Profile",
+  "no_data": "There is no data found linked to your number"
 
 }

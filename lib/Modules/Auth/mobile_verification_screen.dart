@@ -42,7 +42,6 @@ class _MobileVerificationScreenState extends StateX<MobileVerificationScreen> {
   @override
   void initState() {
     super.initState();
-    print( _phoneNumber.substring(_phoneNumber.length - 4));
     // استقبال البيانات من الشاشة السابقة
     if (widget.phoneData != null) {
       _phoneNumber = widget.phoneData!['phoneNumber'] ?? '+966501234567';
@@ -53,6 +52,8 @@ class _MobileVerificationScreenState extends StateX<MobileVerificationScreen> {
       _countryCode = '+966';
       _countryName = 'Saudi Arabia';
     }
+    
+    print(_phoneNumber.substring(_phoneNumber.length - 4));
     
     con.sendVerificationCode(phoneNumber: _phoneNumber);
     _startTimer();
